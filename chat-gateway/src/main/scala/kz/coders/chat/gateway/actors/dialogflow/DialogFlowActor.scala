@@ -12,7 +12,7 @@ import kz.coders.chat.gateway.actors.amqp.AmqpPublisherActor.SendResponse
 import kz.coders.chat.gateway.actors.dialogflow.DialogFlowActor.ProcessMessage
 import kz.domain.library.messages.citybus.CitybusDomain.{GetRoutes, GetRoutesWithStreet, GetVehInfo}
 import kz.domain.library.messages.github.GithubDomain.{GetUserDetails, GetUserRepos}
-import kz.domain.library.messages.{ChatResponse, TelegramSender, UserMessages}
+import kz.domain.library.messages.{ChatResponse, TelegramRequest, TelegramResponse, TelegramSender, UserMessages}
 
 object DialogFlowActor {
 
@@ -51,7 +51,13 @@ class DialogFlowActor(publisher: ActorRef, requesterActor: ActorRef, config: Con
 
   override def receive: Receive = {
     case command: UserMessages =>
-      val response = getDialogflowResponse(command.message.getOrElse("a"))
+      val message = command.message match {
+        case Some(value) => value match {
+          case TelegramRequest(message) => message
+        }
+        case None => "a"
+      }
+      val response = getDialogflowResponse(message)
       log.info(s"Received intent name is ${response.getIntent.getDisplayName}")
       response.getIntent.getDisplayName match {
         case "get-github-account-details" =>
@@ -77,7 +83,7 @@ class DialogFlowActor(publisher: ActorRef, requesterActor: ActorRef, config: Con
           requesterActor ! GetRoutesWithStreet(command.replyTo.getOrElse(""), command.sender, firstCoordinates, secondAddress)
         case _ =>
           log.info(s"Last case ... => ${response.getFulfillmentText}, SENDER => ${command.sender}")
-          publisher ! SendResponse(command.replyTo.getOrElse(""), ChatResponse(command.sender, response.getFulfillmentText))
+          publisher ! SendResponse(command.replyTo.getOrElse(""), ChatResponse(command.sender, TelegramResponse(response.getFulfillmentText)))
       }
   }
 

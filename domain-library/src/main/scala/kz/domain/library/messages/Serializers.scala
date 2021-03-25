@@ -10,6 +10,8 @@ trait Serializers {
     classOf[HttpSender],
     classOf[Response],
     classOf[Request],
+    classOf[TelegramRequest],
+    classOf[TelegramResponse],
     classOf[WallBrickCalcRequest],
     classOf[WallBrickCalcResponse],
     classOf[SlabFoundationRequest],

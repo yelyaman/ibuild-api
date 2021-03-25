@@ -6,7 +6,7 @@ import akka.stream.Materializer
 import akka.util.Timeout
 import com.typesafe.config.Config
 import kz.coders.chat.gateway.actors.amqp.AmqpPublisherActor.SendResponse
-import kz.domain.library.messages.{ChatResponse, Sender}
+import kz.domain.library.messages.{ChatResponse, Sender, TelegramResponse}
 import kz.domain.library.messages.citybus.CitybusDomain._
 import kz.domain.library.messages.github.GithubDomain._
 
@@ -68,18 +68,18 @@ class RequesterActor(publisherActor: ActorRef, config: Config)(
   def gitProcessAndSend(request: Any, routingKey: String, sender: Sender): Unit =
     request match {
       case obj: GetUserDetailsResponse =>
-        publisherActor ! SendResponse(routingKey, ChatResponse(sender, obj.details))
+        publisherActor ! SendResponse(routingKey, ChatResponse(sender, TelegramResponse(obj.details)))
       case obj: GetUserReposResponse =>
-        publisherActor ! SendResponse(routingKey, ChatResponse(sender, obj.repos))
+        publisherActor ! SendResponse(routingKey, ChatResponse(sender, TelegramResponse(obj.repos)))
       case err: GetFailure =>
-        publisherActor ! SendResponse(routingKey, ChatResponse(sender, err.error))
+        publisherActor ! SendResponse(routingKey, ChatResponse(sender, TelegramResponse(err.error)))
     }
 
   def citybusProcessAndSend(request: Any, routingKey: String, sender: Sender): Unit =
     request match {
       case obj: VehInfoResponse =>
-        publisherActor ! SendResponse(routingKey, ChatResponse(sender, obj.busses))
+        publisherActor ! SendResponse(routingKey, ChatResponse(sender, TelegramResponse(obj.busses)))
       case obj: RoutesResponse =>
-        publisherActor ! SendResponse(routingKey, ChatResponse(sender, obj.routes))
+        publisherActor ! SendResponse(routingKey, ChatResponse(sender, TelegramResponse(obj.routes)))
     }
 }

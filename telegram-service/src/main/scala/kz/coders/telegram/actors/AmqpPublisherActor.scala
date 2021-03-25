@@ -5,7 +5,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 import com.rabbitmq.client.{Channel, MessageProperties}
 import com.typesafe.config.Config
 import kz.coders.telegram.Boot.config
-import kz.domain.library.messages.{Serializers, TelegramSender, UserMessages}
+import kz.domain.library.messages.{Serializers, TelegramRequest, TelegramSender, UserMessages}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 
@@ -25,7 +25,7 @@ class AmqpPublisherActor(channel: Channel, config: Config) extends Actor with Ac
   override def receive: Receive = {
     case msg: SendMessage =>
       log.info(s"actor received message ${msg.message}")
-      val userMessage = UserMessages(msg.sender, Some(msg.message), Some(telegramResponseRoutingKey))
+      val userMessage = UserMessages(msg.sender, Some(TelegramRequest(msg.message)), Some(telegramResponseRoutingKey))
       val jsonMessage = write(userMessage)
       Try(
         channel.basicPublish(

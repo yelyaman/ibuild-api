@@ -16,6 +16,9 @@ case class HttpSender(actorPath: String) extends Sender
 
 case class UserMessages(sender: Sender, message: Option[Request], replyTo: Option[String])
 
+case class TelegramRequest(message: String) extends Request
+case class TelegramResponse(message: String) extends Response
+
 case class ChatResponse(sender: Sender, response: Response)
 
 case class HttpRequest(request: String) extends Request
