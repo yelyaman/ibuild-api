@@ -1,15 +1,15 @@
 package actors
 
-import akka.actor.{Actor, ActorLogging, ActorRef}
+import akka.actor.{ Actor, ActorLogging, ActorRef }
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
-import akka.http.scaladsl.server.{RequestContext, RouteResult}
+import akka.http.scaladsl.server.{ RequestContext, RouteResult }
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import kz.domain.library.messages.calculations.WallBrickCalcRequest
-import kz.domain.library.messages.{ChatResponse, HttpRequest, HttpSender, Request, Response, UserMessages}
-import org.json4s.{DefaultFormats, Serialization}
+import kz.domain.library.messages.{ ChatResponse, HttpRequest, HttpSender, Request, Response, UserMessages }
+import org.json4s.{ DefaultFormats, Serialization }
 import org.json4s.native.Serialization
 
-import scala.concurrent.{ExecutionContext, Promise}
+import scala.concurrent.{ ExecutionContext, Promise }
 
 object PerRequest {
   class PerRequestActor(
@@ -34,7 +34,7 @@ trait PerRequest extends Actor with ActorLogging with Json4sSupport {
   val httpSender: HttpSender = HttpSender(self.path.toStringWithoutAddress)
   val message = request match {
     case obj: HttpRequest => UserMessages(httpSender, Option(obj), Some("http.message.response"))
-    case obj => UserMessages(httpSender, Option(obj), Some("http.message.response"))
+    case obj              => UserMessages(httpSender, Option(obj), Some("http.message.response"))
   }
 
   publisherActor ! message

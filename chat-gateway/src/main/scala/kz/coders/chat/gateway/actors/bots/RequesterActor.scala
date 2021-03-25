@@ -1,12 +1,12 @@
 package kz.coders.chat.gateway.actors.bots
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import akka.actor.{ Actor, ActorLogging, ActorRef, ActorSystem, Props }
 import akka.pattern.ask
 import akka.stream.Materializer
 import akka.util.Timeout
 import com.typesafe.config.Config
 import kz.coders.chat.gateway.actors.amqp.AmqpPublisherActor.SendResponse
-import kz.domain.library.messages.{ChatResponse, Sender, TelegramResponse}
+import kz.domain.library.messages.{ ChatResponse, Sender, TelegramResponse }
 import kz.domain.library.messages.citybus.CitybusDomain._
 import kz.domain.library.messages.github.GithubDomain._
 

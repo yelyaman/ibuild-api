@@ -1,11 +1,11 @@
-import actors.amqp.{AmqpListenerActor, AmqpPublisherActor}
+import actors.amqp.{ AmqpListenerActor, AmqpPublisherActor }
 import actors.bots.RequesterActor
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import com.typesafe.config.{Config, ConfigFactory}
-import kz.amqp.library.{AmqpConsumer, RabbitMqConnection}
+import com.typesafe.config.{ Config, ConfigFactory }
+import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
 
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object Boot extends App {
 
@@ -19,9 +19,9 @@ object Boot extends App {
   val port        = config.getInt("rabbitmq.port")
   val virtualHost = config.getString("rabbitmq.virtualHost")
 
-  val gatewayInExchange = config.getString("rabbitmq.gatewayInExchange")
+  val gatewayInExchange  = config.getString("rabbitmq.gatewayInExchange")
   val gatewayOutExchange = config.getString("rabbitmq.gatewayOutExchange")
-  val calcRequestQueue = config.getString("rabbitmq.calcResponseQueue")
+  val calcRequestQueue   = config.getString("rabbitmq.calcResponseQueue")
 
   val calcRequestRoutingKey = config.getString("rabbitmq.calcRequestRoutingKey")
 
@@ -46,7 +46,7 @@ object Boot extends App {
 
   val publisher = system.actorOf(AmqpPublisherActor.props(channel, config))
   val requester = system.actorOf(RequesterActor.props(publisher, config))
-  val listener      = system.actorOf(AmqpListenerActor.props(requester))
+  val listener  = system.actorOf(AmqpListenerActor.props(requester))
 
   channel.basicConsume(calcRequestQueue, AmqpConsumer(listener))
 }

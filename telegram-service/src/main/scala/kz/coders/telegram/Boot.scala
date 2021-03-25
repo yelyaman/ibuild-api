@@ -2,13 +2,13 @@ package kz.coders.telegram
 
 import akka.actor.ActorSystem
 import akka.event.LoggingAdapter
-import akka.stream.{ActorMaterializer, Materializer}
+import akka.stream.{ ActorMaterializer, Materializer }
 import com.typesafe.config.ConfigFactory
-import kz.amqp.library.{AmqpConsumer, RabbitMqConnection}
-import kz.coders.telegram.actors.{AmqpListenerActor, AmqpPublisherActor}
+import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
+import kz.coders.telegram.actors.{ AmqpListenerActor, AmqpPublisherActor }
 
 import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object Boot extends App {
   implicit val system: ActorSystem        = ActorSystem("telegram-demo")

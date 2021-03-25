@@ -1,14 +1,14 @@
-import actors.{AmqpListenerActor, AmqpPublisherActor}
+import actors.{ AmqpListenerActor, AmqpPublisherActor }
 import akka.actor.ActorSystem
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
 import akka.stream.Materializer
 import com.typesafe.config.ConfigFactory
-import kz.amqp.library.{AmqpConsumer, RabbitMqConnection}
+import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
 import routes.Routes
 
 import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object Boot extends App {
   implicit val system: ActorSystem        = ActorSystem("http-adapter")
@@ -21,17 +21,17 @@ object Boot extends App {
   val cityBusUrl = config.getString("application.cityBusUrlPrefix")
   val gitHubUrl  = config.getString("application.gitHubUrlPrefix")
 
-  val host         = config.getString("application.host")
-  val port         = config.getInt("application.port")
+  val host = config.getString("application.host")
+  val port = config.getInt("application.port")
 
   val username    = config.getString("rabbitmq.username")
   val password    = config.getString("rabbitmq.password")
-  val rmqHost        = config.getString("rabbitmq.host")
-  val rmqPort        = config.getInt("rabbitmq.port")
+  val rmqHost     = config.getString("rabbitmq.host")
+  val rmqPort     = config.getInt("rabbitmq.port")
   val virtualHost = config.getString("rabbitmq.virtualHost")
 
-  val gatewayInExchange     = config.getString("rabbitmq.gatewayInExchange")
-  val gatewayOutExchange    = config.getString("rabbitmq.gatewayOutExchange")
+  val gatewayInExchange  = config.getString("rabbitmq.gatewayInExchange")
+  val gatewayOutExchange = config.getString("rabbitmq.gatewayOutExchange")
 
   val httpResponseQueue = config.getString("rabbitmq.httpResponseQueue")
   val calcResponseQueue = config.getString("rabbitmq.calcResponseQueue")
@@ -69,7 +69,7 @@ object Boot extends App {
   )
 
   val publisherActor = system.actorOf(AmqpPublisherActor.props(channel, config))
-  val listenerActor = system.actorOf(AmqpListenerActor.props())
+  val listenerActor  = system.actorOf(AmqpListenerActor.props())
   channel.basicConsume(httpResponseQueue, AmqpConsumer(listenerActor))
   channel.basicConsume(calcResponseQueue, AmqpConsumer(listenerActor))
 

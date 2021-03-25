@@ -1,8 +1,8 @@
 package kz.coders.telegram.actors
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ Actor, ActorLogging, Props }
 import kz.coders.telegram.TelegramService
-import kz.domain.library.messages.{ChatResponse, Serializers, TelegramResponse}
+import kz.domain.library.messages.{ ChatResponse, Serializers, TelegramResponse }
 import org.json4s.jackson.JsonMethods.parse
 
 object AmqpListenerActor {

@@ -1,7 +1,7 @@
 package actors.amqp
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
-import kz.domain.library.messages.{Serializers, UserMessages}
+import akka.actor.{ Actor, ActorLogging, ActorRef, Props }
+import kz.domain.library.messages.{ Serializers, UserMessages }
 import org.json4s.jackson.JsonMethods.parse
 
 object AmqpListenerActor {

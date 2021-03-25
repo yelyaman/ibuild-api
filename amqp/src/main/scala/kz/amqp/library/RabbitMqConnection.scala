@@ -2,18 +2,20 @@ package kz.amqp.library
 
 import java.util
 
-import com.rabbitmq.client.AMQP.{Exchange, Queue}
-import com.rabbitmq.client.{Channel, Connection, ConnectionFactory}
+import com.rabbitmq.client.AMQP.{ Exchange, Queue }
+import com.rabbitmq.client.{ Channel, Connection, ConnectionFactory }
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{ Failure, Success, Try }
 
 object RabbitMqConnection {
 
-  def getRabbitMqConnection(username: String,
-                            password: String,
-                            host: String,
-                            port: Int,
-                            virtualHost: String): Connection ={
+  def getRabbitMqConnection(
+    username: String,
+    password: String,
+    host: String,
+    port: Int,
+    virtualHost: String
+  ): Connection = {
     val factory = new ConnectionFactory
     factory.setUsername(username)
     factory.setPassword(password)
@@ -35,7 +37,12 @@ object RabbitMqConnection {
       )
     )
 
-  def declareAndBindQueue(channel: Channel, queueName: String, exchangeName: String, routingKey: String): Try[Queue.BindOk] =
+  def declareAndBindQueue(
+    channel: Channel,
+    queueName: String,
+    exchangeName: String,
+    routingKey: String
+  ): Try[Queue.BindOk] =
     Try(
       channel.queueDeclare(
         queueName,

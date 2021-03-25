@@ -3,16 +3,16 @@ package kz.coders.chat.gateway.actors.dialogflow
 import java.io.FileInputStream
 import java.util.UUID
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.{ Actor, ActorLogging, ActorRef, Props }
 import com.google.api.gax.core.FixedCredentialsProvider
-import com.google.auth.oauth2.{GoogleCredentials, ServiceAccountCredentials}
+import com.google.auth.oauth2.{ GoogleCredentials, ServiceAccountCredentials }
 import com.google.cloud.dialogflow.v2._
 import com.typesafe.config.Config
 import kz.coders.chat.gateway.actors.amqp.AmqpPublisherActor.SendResponse
 import kz.coders.chat.gateway.actors.dialogflow.DialogFlowActor.ProcessMessage
-import kz.domain.library.messages.citybus.CitybusDomain.{GetRoutes, GetRoutesWithStreet, GetVehInfo}
-import kz.domain.library.messages.github.GithubDomain.{GetUserDetails, GetUserRepos}
-import kz.domain.library.messages.{ChatResponse, TelegramRequest, TelegramResponse, TelegramSender, UserMessages}
+import kz.domain.library.messages.citybus.CitybusDomain.{ GetRoutes, GetRoutesWithStreet, GetVehInfo }
+import kz.domain.library.messages.github.GithubDomain.{ GetUserDetails, GetUserRepos }
+import kz.domain.library.messages.{ ChatResponse, TelegramRequest, TelegramResponse, TelegramSender, UserMessages }
 
 object DialogFlowActor {
 
@@ -52,9 +52,10 @@ class DialogFlowActor(publisher: ActorRef, requesterActor: ActorRef, config: Con
   override def receive: Receive = {
     case command: UserMessages =>
       val message = command.message match {
-        case Some(value) => value match {
-          case TelegramRequest(message) => message
-        }
+        case Some(value) =>
+          value match {
+            case TelegramRequest(message) => message
+          }
         case None => "a"
       }
       val response = getDialogflowResponse(message)
@@ -78,12 +79,20 @@ class DialogFlowActor(publisher: ActorRef, requesterActor: ActorRef, config: Con
           val secondAddress = getValueByParameter(response, "second-coordinates")
           requesterActor ! GetRoutes(command.replyTo.getOrElse(""), command.sender, firstAddress, secondAddress)
         case "route-by-street-coord" =>
-          val firstCoordinates  = getValueByParameter(response, "first-coordinates")
-          val secondAddress = getValueByParameter(response, "second-address")
-          requesterActor ! GetRoutesWithStreet(command.replyTo.getOrElse(""), command.sender, firstCoordinates, secondAddress)
+          val firstCoordinates = getValueByParameter(response, "first-coordinates")
+          val secondAddress    = getValueByParameter(response, "second-address")
+          requesterActor ! GetRoutesWithStreet(
+            command.replyTo.getOrElse(""),
+            command.sender,
+            firstCoordinates,
+            secondAddress
+          )
         case _ =>
           log.info(s"Last case ... => ${response.getFulfillmentText}, SENDER => ${command.sender}")
-          publisher ! SendResponse(command.replyTo.getOrElse(""), ChatResponse(command.sender, TelegramResponse(response.getFulfillmentText)))
+          publisher ! SendResponse(
+            command.replyTo.getOrElse(""),
+            ChatResponse(command.sender, TelegramResponse(response.getFulfillmentText))
+          )
       }
   }
 

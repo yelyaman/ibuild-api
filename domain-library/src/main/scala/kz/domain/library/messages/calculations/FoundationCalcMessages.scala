@@ -1,6 +1,6 @@
 package kz.domain.library.messages.calculations
 
-import kz.domain.library.messages.{Request, Response}
+import kz.domain.library.messages.{ Request, Response }
 
 case class SlabFoundationRequest(
   a_length: Double,

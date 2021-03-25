@@ -4,8 +4,8 @@ import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
-import kz.amqp.library.{AmqpConsumer, RabbitMqConnection}
-import kz.coders.chat.gateway.actors.amqp.{AmqpListenerActor, AmqpPublisherActor}
+import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
+import kz.coders.chat.gateway.actors.amqp.{ AmqpListenerActor, AmqpPublisherActor }
 import kz.coders.chat.gateway.actors.bots.RequesterActor
 import kz.coders.chat.gateway.actors.dialogflow.DialogFlowActor
 
@@ -24,13 +24,13 @@ object Boot extends App {
   val port        = config.getInt("rabbitmq.port")
   val virtualHost = config.getString("rabbitmq.virtualHost")
 
-  val gatewayInExchange = config.getString("rabbitmq.gatewayInExchange")
-  val gatewayOutExchange = config.getString("rabbitmq.gatewayOutExchange")
+  val gatewayInExchange    = config.getString("rabbitmq.gatewayInExchange")
+  val gatewayOutExchange   = config.getString("rabbitmq.gatewayOutExchange")
   val telegramRequestQueue = config.getString("rabbitmq.telegramRequestQueue")
-  val httpQueue = config.getString("rabbitmq.httpRequestQueue")
+  val httpQueue            = config.getString("rabbitmq.httpRequestQueue")
 
   val telegramRequestRoutingKey = config.getString("rabbitmq.telegramRequestRoutingKey")
-  val httpRequestRoutingKey = config.getString("rabbitmq.httpRequestRoutingKey")
+  val httpRequestRoutingKey     = config.getString("rabbitmq.httpRequestRoutingKey")
 
   val connection =
     RabbitMqConnection.getRabbitMqConnection(username, password, host, port, virtualHost)
@@ -52,8 +52,8 @@ object Boot extends App {
   RabbitMqConnection.declareAndBindQueue(channel, telegramRequestQueue, gatewayInExchange, telegramRequestRoutingKey)
   RabbitMqConnection.declareAndBindQueue(channel, httpQueue, gatewayInExchange, httpRequestRoutingKey)
 
-  val publisher = system.actorOf(AmqpPublisherActor.props(channel, config))
-  val requester = system.actorOf(RequesterActor.props(publisher, config))
+  val publisher     = system.actorOf(AmqpPublisherActor.props(channel, config))
+  val requester     = system.actorOf(RequesterActor.props(publisher, config))
   val dialogflowRef = system.actorOf(DialogFlowActor.props(publisher, requester, config))
   val listener      = system.actorOf(AmqpListenerActor.props(dialogflowRef))
 

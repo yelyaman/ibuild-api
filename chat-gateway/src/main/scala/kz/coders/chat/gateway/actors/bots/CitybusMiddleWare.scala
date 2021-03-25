@@ -1,7 +1,7 @@
 package kz.coders.chat.gateway.actors.bots
 
 import akka.pattern.ask
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.{ Actor, ActorLogging, ActorRef, Props }
 import akka.util.Timeout
 import kz.domain.library.messages.citybus.CitybusDomain.GetVehInfo
 import kz.domain.library.messages.github.GithubDomain.GetResponse
