@@ -3,7 +3,7 @@ ThisBuild / scalaVersion := "2.12.12"
 ThisBuild / scalafmtOnCompile := true
 enablePlugins(JavaAppPackaging)
 
-mainClass in Compile := Some("server.MyServer")
+//mainClass in Compile := Some("kz.coders.http.adapter.Boot")
 
 ThisBuild / resolvers ++= Seq(
   "Millhouse Bintray" at "http://dl.bintray.com/themillhousegroup/maven"

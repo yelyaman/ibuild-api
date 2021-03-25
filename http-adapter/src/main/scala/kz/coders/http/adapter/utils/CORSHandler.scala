@@ -1,4 +1,4 @@
-package utils
+package kz.coders.http.adapter.utils
 
 import akka.http.scaladsl.model.HttpMethods.{ DELETE, GET, OPTIONS, POST, PUT }
 import akka.http.scaladsl.model.{ HttpResponse, StatusCodes }

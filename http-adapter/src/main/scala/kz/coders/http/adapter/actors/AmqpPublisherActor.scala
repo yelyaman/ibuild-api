@@ -1,4 +1,4 @@
-package actors
+package kz.coders.http.adapter.actors
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import com.rabbitmq.client.{ Channel, MessageProperties }

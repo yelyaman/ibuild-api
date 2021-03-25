@@ -1,14 +1,16 @@
-import actors.{ AmqpListenerActor, AmqpPublisherActor }
+package kz.coders.http.adapter
+
 import akka.actor.ActorSystem
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.Http
 import akka.stream.Materializer
 import com.typesafe.config.ConfigFactory
-import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
-import routes.Routes
+import kz.amqp.library.{AmqpConsumer, RabbitMqConnection}
+import kz.coders.http.adapter.actors.{AmqpListenerActor, AmqpPublisherActor}
+import kz.coders.http.adapter.routes.Routes
 
 import scala.concurrent.ExecutionContext
-import scala.util.{ Failure, Success }
+import scala.util.{Failure, Success}
 
 object Boot extends App {
   implicit val system: ActorSystem        = ActorSystem("http-adapter")

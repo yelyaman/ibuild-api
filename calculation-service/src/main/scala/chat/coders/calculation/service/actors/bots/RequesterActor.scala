@@ -1,15 +1,15 @@
-package actors.bots
+package chat.coders.calculation.service.actors.bots
 
-import actors.amqp.AmqpPublisherActor.SendResponse
-import akka.actor.{ Actor, ActorLogging, ActorRef, ActorSystem, Props }
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.pattern.ask
 import akka.stream.Materializer
 import akka.util.Timeout
+import chat.coders.calculation.service.actors.amqp.AmqpPublisherActor.SendResponse
 import com.typesafe.config.Config
 import kz.domain.library.messages.calculations._
 import kz.domain.library.messages.citybus.CitybusDomain._
 import kz.domain.library.messages.github.GithubDomain._
-import kz.domain.library.messages.{ ChatResponse, Sender, Serializers, UserMessages }
+import kz.domain.library.messages.{ChatResponse, Sender, Serializers, UserMessages}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._

@@ -1,7 +1,9 @@
-import actors.amqp.{ AmqpListenerActor, AmqpPublisherActor }
-import actors.bots.RequesterActor
+package chat.coders.calculation.service
+
 import akka.actor.ActorSystem
 import akka.stream.Materializer
+import chat.coders.calculation.service.actors.amqp.{ AmqpListenerActor, AmqpPublisherActor }
+import chat.coders.calculation.service.actors.bots.RequesterActor
 import com.typesafe.config.{ Config, ConfigFactory }
 import kz.amqp.library.{ AmqpConsumer, RabbitMqConnection }
 

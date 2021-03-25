@@ -1,21 +1,21 @@
-package routes
+package kz.coders.http.adapter.routes
 
-import actors.PerRequest.PerRequestActor
-import akka.actor.{ ActorLogging, ActorRef, ActorSystem, Props }
+import akka.actor.{ActorLogging, ActorRef, ActorSystem, Props}
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{ RequestContext, Route, RouteResult }
+import akka.http.scaladsl.server.{RequestContext, Route, RouteResult}
 import akka.util.Timeout
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
-import com.typesafe.config.{ Config, ConfigFactory }
+import com.typesafe.config.{Config, ConfigFactory}
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
+import kz.coders.http.adapter.actors.PerRequest.PerRequestActor
 import kz.domain.library.messages._
-import kz.domain.library.messages.calculations.{ SlabFoundationRequest, WallBrickCalcRequest }
+import kz.domain.library.messages.calculations.{SlabFoundationRequest, WallBrickCalcRequest}
 import org.json4s.native.Serialization
-import org.json4s.{ DefaultFormats, Serialization }
-import utils.CORSHandler
+import org.json4s.{DefaultFormats, Serialization}
+import kz.coders.http.adapter.utils.CORSHandler
 
-import scala.concurrent.{ ExecutionContext, Future, Promise }
+import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.concurrent.duration._
 
 class Routes(publisherActor: ActorRef, log: LoggingAdapter)(implicit val ex: ExecutionContext, system: ActorSystem)

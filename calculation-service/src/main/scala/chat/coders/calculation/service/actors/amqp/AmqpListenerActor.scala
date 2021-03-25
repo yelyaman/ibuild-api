@@ -1,4 +1,4 @@
-package actors.amqp
+package chat.coders.calculation.service.actors.amqp
 
 import akka.actor.{ Actor, ActorLogging, ActorRef, Props }
 import kz.domain.library.messages.{ Serializers, UserMessages }
